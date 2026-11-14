@@ -2,24 +2,21 @@
 
 namespace Database\Seeders;
 
+use App\Models\Task;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $demo = User::factory()->create([
+            'name' => 'Demo User',
+            'email' => 'demo@example.com',
         ]);
+
+        Task::factory()->count(8)->for($demo)->create();
+
+        User::factory()->count(2)->has(Task::factory()->count(5))->create();
     }
 }
