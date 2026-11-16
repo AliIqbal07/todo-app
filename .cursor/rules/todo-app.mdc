@@ -1,0 +1,22 @@
+---
+alwaysApply: true
+---
+# Todo app rules
+
+## Laravel
+- Keep controllers thin: put validation in Form Requests and use `$request->validated()`.
+- Use Eloquent, not raw SQL. Reach tasks through the logged-in user (`$request->user()->tasks()`) and never accept `user_id` from request input.
+- Never edit a migration that has already run. Add a new migration with a working `down()`.
+- Use named routes with `route()`, keep `@csrf` and `@method` in every Blade form, and output with `{{ }}` so values are escaped.
+- Relationship methods need a return type and a generic docblock, for example `/** @return HasMany<Task, $this> */`.
+
+## Quality
+- Run `./vendor/bin/pint` and `composer ci:check` before every commit, and do not commit while they fail.
+- Write Pest tests with factories for new behaviour: the happy path, authentication, validation and ownership.
+
+## Git
+- Use Conventional Commits: `type(scope): description`, lowercase, one logical change per commit.
+- Never add AI attribution lines ("Co-Authored-By", "Generated with ...") to commits or PR descriptions.
+
+## Working with me
+- After creating or changing a file, briefly explain what it does, so I can explain it myself later.
