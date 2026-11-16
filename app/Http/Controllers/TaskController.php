@@ -72,6 +72,7 @@ class TaskController extends Controller
 
     private function ensureOwner(Request $request, Task $task): void
     {
-        abort_unless($task->user_id === $request->user()->id, 403);
+        // changed 403 to 404
+        abort_unless($task->user_id === $request->user()->id, 404);
     }
 }
