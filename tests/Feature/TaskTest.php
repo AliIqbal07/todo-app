@@ -80,15 +80,16 @@ test('users can delete their own task', function () {
     $this->assertDatabaseMissing('tasks', ['id' => $task->id]);
 });
 
-test('users cannot edit or delete another users task', function () {
+test('users get a 404 for another users task', function () {
     $user = User::factory()->create();
-    $task = Task::factory()->for(User::factory())->create();
+    $task = Task::factory()->for(User::factory())->create(['completed' => false]);
 
-    $this->actingAs($user)->get(route('tasks.edit', $task))->assertForbidden();
-    $this->actingAs($user)->put(route('tasks.update', $task), ['title' => 'Hacked'])->assertForbidden();
-    $this->actingAs($user)->delete(route('tasks.destroy', $task))->assertForbidden();
+    $this->actingAs($user)->get(route('tasks.edit', $task))->assertNotFound();
+    $this->actingAs($user)->put(route('tasks.update', $task), ['title' => 'Hacked'])->assertNotFound();
+    $this->actingAs($user)->patch(route('tasks.toggle', $task))->assertNotFound();
+    $this->actingAs($user)->delete(route('tasks.destroy', $task))->assertNotFound();
 
-    $this->assertDatabaseHas('tasks', ['id' => $task->id]);
+    $this->assertDatabaseHas('tasks', ['id' => $task->id, 'completed' => false]);
 });
 
 test('users can mark a task as complete and reopen it', function () {
